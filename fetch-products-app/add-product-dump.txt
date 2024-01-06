@@ -1,0 +1,36 @@
+        // console.log(title, image, price, description, category)
+        // e.preventDefault();
+
+        // const newProduct = {
+        //     title: title,
+        //     image: image,
+        //     price: parseFloat(price),
+        //     description: description,
+        //     category: category
+        // }
+        // addProduct(newProduct)
+        // router.push('/api/products')
+        // console.log("Submit")
+        e.preventDefault();
+        if (selectedFile) {
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('price', price);
+            formData.append('description', description);
+            formData.append('category', category);
+            formData.append('image', selectedFile); // Append the selected file.
+
+            // Use Multer middleware for file upload.
+            const multerMiddleware = upload.array('image', 1); // 'image' should match your input field name.
+            
+            try {
+                // Make a POST request to your add product API.
+                await addProduct(formData);
+                router.push('/api/products');
+                console.log('Submit');
+            } catch (error) {
+                console.error('Error submitting the product', error);
+            }
+        } else {
+            console.error('No file selected');
+        }
